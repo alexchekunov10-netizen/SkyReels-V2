@@ -1,0 +1,55 @@
+name: chatgpt-atlantis-assets
+on:
+  push:
+    branches:
+      - chatgpt-atlantis-assets-20261006
+
+jobs:
+  download-assets:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Download verified source assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+
+          curl -fL --retry 3 --retry-delay 2 \
+            'https://assets.science.nasa.gov/dynamicimage/assets/science/esd/eo/images/iotd/2026/eyeing-the-richat-structure/richatstructure_oli_20260306_lrg.jpg?crop=faces%2Cfocalpoint&fit=clip&h=2681&w=4022' \
+            -o assets/01_richat_nasa_2026.jpg
+
+          curl -fL --retry 3 --retry-delay 2 \
+            'https://upload.wikimedia.org/wikipedia/commons/c/cc/Libya_5041_Petroglyphs_Tadrart_Acacus_Luca_Galuzzi_2007.jpg' \
+            -o assets/02_sahara_elephant_petroglyph.jpg
+
+          curl -fL --retry 3 --retry-delay 2 \
+            'https://upload.wikimedia.org/wikipedia/commons/e/e2/Atlantis_Kircher_Mundus_subterraneus_1678_inverted.jpg' \
+            -o assets/03_atlantis_kircher_1678.jpg
+
+          curl -fL --retry 3 --retry-delay 2 \
+            'https://www.gutenberg.org/files/1571/1571-0.txt' \
+            -o assets/04_plato_critias_jowett.txt
+
+          printf '%s\n' \
+            '01 NASA Earth Observatory Richat Structure, 2026' \
+            '02 Tadrart Acacus elephant petroglyph, Luca Galuzzi, CC BY-SA 2.5' \
+            '03 Athanasius Kircher Atlantis map, 1678, public domain' \
+            '04 Plato Critias, Benjamin Jowett translation, Project Gutenberg' \
+            > assets/SOURCES.txt
+
+          echo '--- sizes ---'
+          ls -lh assets
+          echo '--- file types ---'
+          file assets/*
+          echo '--- sha256 ---'
+          sha256sum assets/*
+
+      - name: Upload source pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlantis-source-assets
+          path: assets
+          if-no-files-found: error
+          retention-days: 7
