@@ -10,46 +10,38 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Download verified source assets
+      - name: Download Atlantis reel media
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p assets
 
           curl -fL --retry 3 --retry-delay 2 \
-            'https://assets.science.nasa.gov/dynamicimage/assets/science/esd/eo/images/iotd/2026/eyeing-the-richat-structure/richatstructure_oli_20260306_lrg.jpg?crop=faces%2Cfocalpoint&fit=clip&h=2681&w=4022' \
-            -o assets/01_richat_nasa_2026.jpg
+            'https://dnznrvs05pmza.cloudfront.net/text_to_speech/83e71766-8315-4988-b3fd-d13234175bf2/_________________________.mp3?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNmZiZmZlMjZhZGFiOWU4OCIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTQ3NzQxNH0._KNTR9frUpU3yYOywrTTWnTvJOJ0z2Mie2IhtLejQbY' \
+            -o assets/atlantis_voice.mp3
 
           curl -fL --retry 3 --retry-delay 2 \
-            'https://upload.wikimedia.org/wikipedia/commons/c/cc/Libya_5041_Petroglyphs_Tadrart_Acacus_Luca_Galuzzi_2007.jpg' \
-            -o assets/02_sahara_elephant_petroglyph.jpg
+            'https://videos.pexels.com/video-files/17629657/17629657-uhd_3840_2160_25fps.mp4' \
+            -o assets/sahara_source_4k.mp4
 
-          curl -fL --retry 3 --retry-delay 2 \
-            'https://upload.wikimedia.org/wikipedia/commons/e/e2/Atlantis_Kircher_Mundus_subterraneus_1678_inverted.jpg' \
-            -o assets/03_atlantis_kircher_1678.jpg
+          ffmpeg -y -i assets/sahara_source_4k.mp4 \
+            -vf "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2" \
+            -c:v libx264 -preset fast -crf 23 -an assets/sahara_aerial_1080.mp4
 
-          curl -fL --retry 3 --retry-delay 2 \
-            'https://classics.mit.edu/Plato/critias.html' \
-            -o assets/04_plato_critias.html
-
-          printf '%s\n' \
-            '01 NASA Earth Observatory Richat Structure, 2026' \
-            '02 Tadrart Acacus elephant petroglyph, Luca Galuzzi, CC BY-SA 2.5' \
-            '03 Athanasius Kircher Atlantis map, 1678, public domain' \
-            '04 Plato Critias, Benjamin Jowett translation, MIT Classics' \
-            > assets/SOURCES.txt
+          rm assets/sahara_source_4k.mp4
 
           echo '--- sizes ---'
           ls -lh assets
-          echo '--- file types ---'
+          echo '--- types ---'
           file assets/*
-          echo '--- sha256 ---'
-          sha256sum assets/*
+          echo '--- media probe ---'
+          ffprobe -v error -show_entries format=duration -of default=nw=1 assets/atlantis_voice.mp3
+          ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height,r_frame_rate -of default=nw=1 assets/sahara_aerial_1080.mp4
 
-      - name: Upload source pack
+      - name: Upload media pack
         uses: actions/upload-artifact@v4
         with:
-          name: atlantis-source-assets
+          name: atlantis-reel-media
           path: assets
           if-no-files-found: error
           retention-days: 7
