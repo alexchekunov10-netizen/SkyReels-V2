@@ -29,14 +29,14 @@ jobs:
             -o assets/03_atlantis_kircher_1678.jpg
 
           curl -fL --retry 3 --retry-delay 2 \
-            'https://www.gutenberg.org/files/1571/1571-0.txt' \
-            -o assets/04_plato_critias_jowett.txt
+            'https://classics.mit.edu/Plato/critias.html' \
+            -o assets/04_plato_critias.html
 
           printf '%s\n' \
             '01 NASA Earth Observatory Richat Structure, 2026' \
             '02 Tadrart Acacus elephant petroglyph, Luca Galuzzi, CC BY-SA 2.5' \
             '03 Athanasius Kircher Atlantis map, 1678, public domain' \
-            '04 Plato Critias, Benjamin Jowett translation, Project Gutenberg' \
+            '04 Plato Critias, Benjamin Jowett translation, MIT Classics' \
             > assets/SOURCES.txt
 
           echo '--- sizes ---'
