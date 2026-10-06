@@ -24,19 +24,11 @@ jobs:
             'https://videos.pexels.com/video-files/17629657/17629657-uhd_3840_2160_25fps.mp4' \
             -o assets/sahara_source_4k.mp4
 
-          ffmpeg -y -i assets/sahara_source_4k.mp4 \
-            -vf "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2" \
-            -c:v libx264 -preset fast -crf 23 -an assets/sahara_aerial_1080.mp4
-
-          rm assets/sahara_source_4k.mp4
-
           echo '--- sizes ---'
           ls -lh assets
           echo '--- types ---'
           file assets/*
           echo '--- media probe ---'
-          ffprobe -v error -show_entries format=duration -of default=nw=1 assets/atlantis_voice.mp3
-          ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height,r_frame_rate -of default=nw=1 assets/sahara_aerial_1080.mp4
 
       - name: Upload media pack
         uses: actions/upload-artifact@v4
