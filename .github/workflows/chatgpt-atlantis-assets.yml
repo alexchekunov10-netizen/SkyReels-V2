@@ -1,32 +1,25 @@
-name: chatgpt-yonaguni-assets
+name: chatgpt-yonaguni-overview
 on:
   push:
     branches:
       - chatgpt-atlantis-assets-20261006
-
 jobs:
-  download-assets:
+  download:
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
-      - name: Download Yonaguni images
+      - name: Download overview
         shell: bash
         run: |
           mkdir -p assets
-          curl -fL --retry 3 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Yonaguni_Monument_Main_Terrace_Stair.jpg' -o assets/01_main_terrace_stair.jpg || true
-          curl -fL --retry 3 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Yonaguni_Monument_Main_Terrace.jpg' -o assets/02_main_terrace.jpg || true
-          curl -fL --retry 3 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Yonaguni_Monument_Twin_Megaliths_with_Divers.jpg' -o assets/03_twin_megaliths_with_divers.jpg || true
-          curl -fL --retry 3 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Yonaguni_Monument_Water_Trench.jpg' -o assets/04_water_trench.jpg || true
-          curl -fL --retry 3 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Yonaguni_Monument_Loop_Road_and_Retaining_Wall.jpg' -o assets/05_loop_road_retaining_wall.jpg || true
-          curl -fL --retry 3 'https://commons.wikimedia.org/wiki/Special:Redirect/file/At_the_Yonaguni_Monument.jpg' -o assets/06_right_angle_features.jpg || true
+          curl -fL --retry 3 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Yonaguni_Monument_DSC02871_(12737283303).jpg' -o assets/yonaguni_overview.jpg
           ls -lh assets
-          file assets/* || true
-
-      - name: Upload Yonaguni pack
+          file assets/yonaguni_overview.jpg
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: yonaguni-source-assets
+          name: yonaguni-overview
           path: assets
           if-no-files-found: error
           retention-days: 7
