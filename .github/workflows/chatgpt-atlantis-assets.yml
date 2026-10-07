@@ -1,4 +1,4 @@
-name: chatgpt-atlantis-assets
+name: chatgpt-yonaguni-assets
 on:
   push:
     branches:
@@ -10,30 +10,36 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Download Atlantis reel media
+      - name: Download verified Yonaguni source images
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p assets
 
-          curl -fL --retry 3 --retry-delay 2 \
-            'https://dnznrvs05pmza.cloudfront.net/text_to_speech/83e71766-8315-4988-b3fd-d13234175bf2/_________________________.mp3?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNmZiZmZlMjZhZGFiOWU4OCIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTQ3NzQxNH0._KNTR9frUpU3yYOywrTTWnTvJOJ0z2Mie2IhtLejQbY' \
-            -o assets/atlantis_voice.mp3
+          curl -fL --retry 3 --retry-delay 2             'https://commons.wikimedia.org/wiki/Special:Redirect/file/Yonaguni_Monument_Main_Terrace_Stair.jpg'             -o assets/01_main_terrace_stair.jpg
 
-          curl -fL --retry 3 --retry-delay 2 \
-            'https://videos.pexels.com/video-files/17629657/17629657-uhd_3840_2160_25fps.mp4' \
-            -o assets/sahara_source_4k.mp4
+          curl -fL --retry 3 --retry-delay 2             'https://commons.wikimedia.org/wiki/Special:Redirect/file/Yonaguni_Monument_Main_Terrace.jpg'             -o assets/02_main_terrace.jpg
+
+          curl -fL --retry 3 --retry-delay 2             'https://commons.wikimedia.org/wiki/Special:Redirect/file/Yonaguni_Monument_Twin_Megaliths_with_Divers.jpg'             -o assets/03_twin_megaliths_with_divers.jpg
+
+          curl -fL --retry 3 --retry-delay 2             'https://commons.wikimedia.org/wiki/Special:Redirect/file/Yonaguni_Monument_Water_Trench.jpg'             -o assets/04_water_trench.jpg
+
+          curl -fL --retry 3 --retry-delay 2             'https://commons.wikimedia.org/wiki/Special:Redirect/file/Yonaguni_Monument_Loop_Road_and_Retaining_Wall.jpg'             -o assets/05_loop_road_retaining_wall.jpg
+
+          curl -fL --retry 3 --retry-delay 2             'https://commons.wikimedia.org/wiki/Special:Redirect/file/At_the_Yonaguni_Monument.jpg'             -o assets/06_right_angle_features.jpg
+
+          printf '%s
+'             '01 Main Terrace Stair — Melkov — CC0'             '02 Main Terrace — Melkov — CC0'             '03 Twin Megaliths with Divers — Melkov — CC0'             '04 Water Trench — Melkov — CC0'             '05 Loop Road and Retaining Wall — Melkov — CC0'             '06 Right-angle features — Melkov — CC0'             > assets/SOURCES.txt
 
           echo '--- sizes ---'
           ls -lh assets
-          echo '--- types ---'
+          echo '--- file types ---'
           file assets/*
-          echo '--- media probe ---'
 
-      - name: Upload media pack
+      - name: Upload source pack
         uses: actions/upload-artifact@v4
         with:
-          name: atlantis-reel-media
+          name: yonaguni-source-assets
           path: assets
           if-no-files-found: error
           retention-days: 7
