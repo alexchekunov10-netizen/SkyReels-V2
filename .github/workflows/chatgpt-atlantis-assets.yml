@@ -1,4 +1,4 @@
-name: chatgpt-yonaguni-overview
+name: chatgpt-yonaguni-fullview
 on:
   push:
     branches:
@@ -9,17 +9,17 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Download overview
+      - name: Download full Yonaguni panorama
         shell: bash
         run: |
           mkdir -p assets
-          curl -fL --retry 3 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Yonaguni_Monument_DSC02871_(12737283303).jpg' -o assets/yonaguni_overview.jpg
+          curl -fL --retry 3 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Yonaguni_Monument_Banner_02.jpg' -o assets/yonaguni_full_panorama.jpg
           ls -lh assets
-          file assets/yonaguni_overview.jpg
+          file assets/yonaguni_full_panorama.jpg
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: yonaguni-overview
-          path: assets
+          name: yonaguni-full-panorama
+          path: assets/yonaguni_full_panorama.jpg
           if-no-files-found: error
           retention-days: 7
