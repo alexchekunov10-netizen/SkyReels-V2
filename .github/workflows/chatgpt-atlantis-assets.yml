@@ -1,4 +1,4 @@
-name: chatgpt-yonaguni-fullview
+name: chatgpt-yonaguni-model
 on:
   push:
     branches:
@@ -9,17 +9,17 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Download full Yonaguni panorama
+      - name: Download Yonaguni model image
         shell: bash
         run: |
           mkdir -p assets
-          curl -fL --retry 3 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Yonaguni_Monument_Banner_02.jpg' -o assets/yonaguni_full_panorama.jpg
+          curl -fL --retry 3 'https://live.staticflickr.com/2858/10485323185_5231d4e822_b.jpg' -o assets/yonaguni_model_full.jpg
           ls -lh assets
-          file assets/yonaguni_full_panorama.jpg
+          file assets/yonaguni_model_full.jpg
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: yonaguni-full-panorama
-          path: assets/yonaguni_full_panorama.jpg
+          name: yonaguni-model
+          path: assets/yonaguni_model_full.jpg
           if-no-files-found: error
           retention-days: 7
